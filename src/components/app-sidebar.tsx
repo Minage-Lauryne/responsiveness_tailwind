@@ -162,7 +162,7 @@ export function AppSidebar({
         )}
       </SidebarHeader>
 
-      <SidebarContent className="overflow-visible flex flex-col">
+      <SidebarContent className="flex flex-col gap-0 !overflow-y-auto">
       <SidebarGroup className="py-1">
         <SidebarMenu>
           <SidebarMenuItem>
@@ -281,10 +281,10 @@ export function AppSidebar({
         </SidebarMenu>
       </SidebarGroup>
 
-      <div className="flex-1 min-h-0" />
-      
-      <div className="flex-shrink-0">
-        <SidebarGroup className="py-1">
+    </SidebarContent>
+
+      <div className="mt-auto flex-shrink-0">
+        <SidebarGroup className="py-1 px-3">
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
@@ -299,7 +299,6 @@ export function AppSidebar({
           </SidebarMenu>
         </SidebarGroup>
       </div>
-    </SidebarContent>
 
      <SidebarFooter className="flex-shrink-0">
        <div className="px-3 pb-2 pt-4">
