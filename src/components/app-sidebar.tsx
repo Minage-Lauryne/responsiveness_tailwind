@@ -124,7 +124,6 @@ export function AppSidebar({
         "[&_[data-sidebar=sidebar]]:from-[#D1F4F4]",
         "[&_[data-sidebar=sidebar]]:to-white",
         "[&_[data-sidebar=sidebar]]:text-[#162436]",
-        "[&_[data-sidebar=sidebar]]:relative",
         className,
       )}
       {...props}
@@ -163,7 +162,7 @@ export function AppSidebar({
         )}
       </SidebarHeader>
 
-      <SidebarContent className="overflow-visible pb-[220px]">
+      <SidebarContent className="overflow-visible flex flex-col">
       <SidebarGroup className="py-1">
         <SidebarMenu>
           <SidebarMenuItem>
@@ -282,7 +281,9 @@ export function AppSidebar({
         </SidebarMenu>
       </SidebarGroup>
 
-      <div className="absolute bottom-[120px] left-0 right-0">
+      <div className="flex-1 min-h-0" />
+      
+      <div className="flex-shrink-0">
         <SidebarGroup className="py-1">
           <SidebarMenu>
             <SidebarMenuItem>
@@ -300,7 +301,7 @@ export function AppSidebar({
       </div>
     </SidebarContent>
 
-     <SidebarFooter className="absolute bottom-0 left-0 right-0">
+     <SidebarFooter className="flex-shrink-0">
        <div className="px-3 pb-2 pt-4">
          <p className="text-xs font-medium text-gray-500">Profiles</p>
        </div>
