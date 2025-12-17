@@ -162,7 +162,7 @@ export function AppSidebar({
         )}
       </SidebarHeader>
 
-      <SidebarContent className="flex flex-col gap-0 !overflow-y-auto">
+      <SidebarContent className="flex flex-col gap-0">
       <SidebarGroup className="py-1">
         <SidebarMenu>
           <SidebarMenuItem>
