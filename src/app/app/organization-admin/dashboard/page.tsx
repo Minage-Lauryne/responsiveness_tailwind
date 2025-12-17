@@ -220,14 +220,14 @@ export default function DashboardPage() {
           </div>
 
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <div className="flex flex-row items-start justify-between mb-6">
+            <div className="flex items-start justify-between mb-6">
               <div>
                 <h2 className="text-base font-semibold text-gray-900">Organization Details</h2>
                 <p className="text-xs text-gray-500 mt-0.5">View your organization information</p>
               </div>
               <button 
                 onClick={() => setIsEditDialogOpen(true)}
-                className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors flex items-center gap-2 text-sm font-medium whitespace-nowrap"
+                className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors flex items-center gap-2 text-sm font-medium"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
@@ -349,7 +349,7 @@ export default function DashboardPage() {
 
           {/* Search and Filters */}
           <div className="p-4 border-b border-gray-200 bg-gray-50">
-            <div className="flex flex-row items-center gap-3">
+            <div className="flex items-center gap-3">
               <div className="flex-1 max-w-md">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -467,9 +467,9 @@ export default function DashboardPage() {
                         size="icon"
                         onClick={() => handleRemoveMember(member)}
                         disabled={isCurrentUser(member) || removeMember.isPending}
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50 h-8 w-8"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
                       >
-                        <Trash2 className="h-3.5 w-3.5" />
+                        <Trash2 className="h-4 w-4" />
                       </Button>
                     </td>
                   </tr>
