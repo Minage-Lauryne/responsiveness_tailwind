@@ -128,7 +128,7 @@ export function AppSidebar({
       )}
       {...props}
     >
-      <SidebarHeader className="pt-8 pb-6">
+      <SidebarHeader className="pt-8 pb-72">
         {state === "expanded" ? (
           <div className="flex items-center gap-3">
             <Image
