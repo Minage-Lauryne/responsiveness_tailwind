@@ -32,7 +32,10 @@ const config = {
 				},
 				'sm+': {
 					min: '640px'
-				}
+				},
+				'nest-hub': '1024px',
+				'nest-hub-max': '1280px',
+				'mid-screen': { min: '768px', max: '1280px' }
 			},
 			colors: {
 				border: 'hsl(var(--border))',
