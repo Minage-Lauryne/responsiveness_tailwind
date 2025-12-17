@@ -133,7 +133,7 @@ const shouldCompressSpacing =
       <SidebarHeader
         className={cn(
           "pt-8 pb-72 transition-all duration-200",
-
+          "mid-screen:pt-6 mid-screen:pb-72",
         )}
       >
         {state === "expanded" ? (
@@ -172,7 +172,7 @@ const shouldCompressSpacing =
       <SidebarContent
         className={cn(
           "overflow-visible transition-all duration-200",
-          shouldCompressSpacing ? "mt-0" : "mt-6",
+          shouldCompressSpacing ? "mt-0" : "mt-6 mid-screen:mt-4",
         )}
       >
       <SidebarGroup className="py-1">
@@ -296,7 +296,7 @@ const shouldCompressSpacing =
       <div
         className={cn(
           "mt-auto transition-all duration-200",
-          shouldCompressSpacing ? "pt-4" : "pt-12",
+          shouldCompressSpacing ? "pt-4 mid-screen:pt-3" : "pt-12 mid-screen:pt-8",
         )}
       >
         <SidebarGroup className="py-1">

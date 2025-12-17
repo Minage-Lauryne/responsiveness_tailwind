@@ -212,22 +212,22 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="max-w-[1400px] mx-auto px-8 py-8 space-y-8">
-        <div className="space-y-6">
+      <div className="max-w-[1400px] mx-auto px-4 mid-screen:px-6 nest-hub-max:px-8 py-4 mid-screen:py-6 nest-hub-max:py-8 space-y-4 mid-screen:space-y-6 nest-hub-max:space-y-8">
+        <div className="space-y-4 mid-screen:space-y-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{profile?.name || session?.activeOrganization?.name || "Organization"}</h1>
-            <p className="text-sm text-gray-500 mt-1">Manage your organization profile</p>
+            <h1 className="text-2xl mid-screen:text-3xl font-bold text-gray-900">{profile?.name || session?.activeOrganization?.name || "Organization"}</h1>
+            <p className="text-xs mid-screen:text-sm text-gray-500 mt-1">Manage your organization profile</p>
           </div>
 
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <div className="flex items-start justify-between mb-6">
+          <div className="bg-white rounded-lg border border-gray-200 p-4 mid-screen:p-6">
+            <div className="flex flex-col mid-screen:flex-row items-start justify-between mb-4 mid-screen:mb-6 gap-3">
               <div>
-                <h2 className="text-base font-semibold text-gray-900">Organization Details</h2>
+                <h2 className="text-sm mid-screen:text-base font-semibold text-gray-900">Organization Details</h2>
                 <p className="text-xs text-gray-500 mt-0.5">View your organization information</p>
               </div>
               <button 
                 onClick={() => setIsEditDialogOpen(true)}
-                className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors flex items-center gap-2 text-sm font-medium"
+                className="px-3 mid-screen:px-4 py-1.5 mid-screen:py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors flex items-center gap-2 text-xs mid-screen:text-sm font-medium whitespace-nowrap"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
@@ -236,7 +236,7 @@ export default function DashboardPage() {
               </button>
             </div>
             
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 nest-hub:grid-cols-2 gap-4 mid-screen:gap-6">
               <div className="space-y-1">
                 <div className="flex items-center gap-2 text-xs text-gray-500">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
@@ -281,9 +281,9 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <div className="mb-4">
-              <h2 className="text-base font-semibold text-gray-900">IRS Verification Details</h2>
+          <div className="bg-white rounded-lg border border-gray-200 p-4 mid-screen:p-6">
+            <div className="mb-3 mid-screen:mb-4">
+              <h2 className="text-sm mid-screen:text-base font-semibold text-gray-900">IRS Verification Details</h2>
               <p className="text-xs text-gray-500 mt-0.5">Tax-exempt status and financial information</p>
             </div>
             <div className="text-sm text-gray-900">
@@ -302,15 +302,15 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-4 mid-screen:space-y-6">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-1">Dashboard</h2>
-            <p className="text-sm text-gray-500">
+            <h2 className="text-xl mid-screen:text-2xl font-bold text-gray-900 mb-1">Dashboard</h2>
+            <p className="text-xs mid-screen:text-sm text-gray-500">
               Organization workspace overview and statistics
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 nest-hub-max:grid-cols-4 gap-4 mid-screen:gap-6">
             <DashboardCard 
               title="Active Subscriptions" 
               value={subscriptionCount} 
@@ -340,17 +340,17 @@ export default function DashboardPage() {
 
         {/* Members Section */}
         <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-          <div className="p-6 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">Members</h2>
+          <div className="p-4 mid-screen:p-6 border-b border-gray-200">
+            <h2 className="text-base mid-screen:text-lg font-semibold text-gray-900 mb-1">Members</h2>
             <p className="text-xs text-gray-500">
               Manage your organization members and their roles.
             </p>
           </div>
 
           {/* Search and Filters */}
-          <div className="p-4 border-b border-gray-200 bg-gray-50">
-            <div className="flex items-center gap-3">
-              <div className="flex-1 max-w-md">
+          <div className="p-3 mid-screen:p-4 border-b border-gray-200 bg-gray-50">
+            <div className="flex flex-col nest-hub:flex-row items-stretch nest-hub:items-center gap-3">
+              <div className="flex-1 nest-hub:max-w-md">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <input
@@ -360,12 +360,12 @@ export default function DashboardPage() {
                       setCurrentPage(1);
                     }}
                     placeholder="Search by name or email"
-                    className="w-full rounded-md border border-gray-300 px-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full rounded-md border border-gray-300 px-10 py-1.5 mid-screen:py-2 text-xs mid-screen:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 justify-end">
                 <Button variant="outline" size="sm" className="gap-2">
                   <Filter className="h-4 w-4" />
                   Filter
@@ -386,20 +386,20 @@ export default function DashboardPage() {
           </div>
 
           {/* Members Table */}
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+          <div className="overflow-x-auto scrollbar-thin">
+            <table className="min-w-full divide-y divide-gray-200" style={{ minWidth: '700px' }}>
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[40%]">Member</th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-[20%]">Chat Count</th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-[25%]">Role</th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-[15%]">Actions</th>
+                  <th className="px-3 mid-screen:px-6 py-2 mid-screen:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[40%]">Member</th>
+                  <th className="px-3 mid-screen:px-6 py-2 mid-screen:py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-[20%]">Chat Count</th>
+                  <th className="px-3 mid-screen:px-6 py-2 mid-screen:py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-[25%]">Role</th>
+                  <th className="px-3 mid-screen:px-6 py-2 mid-screen:py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-[15%]">Actions</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {memberPreview.length > 0 ? memberPreview.map((member: any) => (
                   <tr key={member.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-3 mid-screen:px-6 py-3 mid-screen:py-4 whitespace-nowrap">
                       <div className="flex items-center gap-3">
                         <Avatar className="h-10 w-10">
                           <AvatarImage src={member.user.image || undefined} />
@@ -421,12 +421,12 @@ export default function DashboardPage() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-center whitespace-nowrap">
+                    <td className="px-3 mid-screen:px-6 py-3 mid-screen:py-4 text-center whitespace-nowrap">
                       <span className="text-sm font-semibold text-gray-900">
                         {isChatsLoading ? "…" : getMemberChatCount(member.user.id)}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-center whitespace-nowrap">
+                    <td className="px-3 mid-screen:px-6 py-3 mid-screen:py-4 text-center whitespace-nowrap">
                       <Select
                         value={member.role}
                         onValueChange={(value: "ADMIN" | "MEMBER" | "VIEWER") => handleRoleChange(member, value)}
@@ -461,21 +461,21 @@ export default function DashboardPage() {
                         </SelectContent>
                       </Select>
                     </td>
-                    <td className="px-6 py-4 text-center whitespace-nowrap">
+                    <td className="px-3 mid-screen:px-6 py-3 mid-screen:py-4 text-center whitespace-nowrap">
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => handleRemoveMember(member)}
                         disabled={isCurrentUser(member) || removeMember.isPending}
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50 h-8 w-8"
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <Trash2 className="h-3.5 w-3.5" />
                       </Button>
                     </td>
                   </tr>
                 )) : (
                   <tr>
-                    <td colSpan={4} className="px-6 py-12 text-center">
+                    <td colSpan={4} className="px-3 mid-screen:px-6 py-8 mid-screen:py-12 text-center">
                       <div className="flex flex-col items-center justify-center text-gray-400">
                         <UserIcon className="h-10 w-10 mb-2" />
                         <p className="text-sm">No members match your search / filters.</p>
@@ -487,7 +487,7 @@ export default function DashboardPage() {
             </table>
           </div>
           
-          <div className="px-6 py-3 bg-gray-50 border-t border-gray-200">
+          <div className="px-3 mid-screen:px-6 py-2 mid-screen:py-3 bg-gray-50 border-t border-gray-200">
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-4 text-gray-600">
                 <label className="inline-flex items-center gap-1.5">
@@ -538,10 +538,10 @@ export default function DashboardPage() {
         </div>
 
         {/* Join Requests Section */}
-        <div className="space-y-6">
+        <div className="space-y-4 mid-screen:space-y-6">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-1">Join Requests</h2>
-            <p className="text-sm text-gray-500">
+            <h2 className="text-xl mid-screen:text-2xl font-bold text-gray-900 mb-1">Join Requests</h2>
+            <p className="text-xs mid-screen:text-sm text-gray-500">
               Review and respond to pending membership requests.
             </p>
           </div>
@@ -581,7 +581,7 @@ export default function DashboardPage() {
 
               <TabsContent value={activeTab} className="m-0">
                 {!requests || requests.length === 0 ? (
-                  <div className="p-16 text-center">
+                  <div className="p-8 mid-screen:p-16 text-center">
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-50 mb-4">
                       <UserIcon className="h-8 w-8 text-gray-300" />
                     </div>
@@ -593,15 +593,15 @@ export default function DashboardPage() {
                     </p>
                   </div>
                 ) : (
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full">
+                  <div className="overflow-x-auto scrollbar-thin">
+                    <table className="min-w-full" style={{ minWidth: '700px' }}>
                       <thead className="bg-gray-50 border-b border-gray-200">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[35%]">Name</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[20%]">Received</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[15%]">Status</th>
-                          {activeTab === "pending" && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[25%]">Actions</th>}
-                          <th className="w-12"></th>
+                          <th className="px-3 mid-screen:px-6 py-2 mid-screen:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[35%]">Name</th>
+                          <th className="px-3 mid-screen:px-6 py-2 mid-screen:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[20%]">Received</th>
+                          <th className="px-3 mid-screen:px-6 py-2 mid-screen:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[15%]">Status</th>
+                          {activeTab === "pending" && <th className="px-3 mid-screen:px-6 py-2 mid-screen:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[25%]">Actions</th>}
+                          <th className="w-8 mid-screen:w-12"></th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
@@ -613,7 +613,7 @@ export default function DashboardPage() {
                                 onClick={() => setExpandedRequestId(isExpanded ? null : request.id)}
                                 className="cursor-pointer hover:bg-gray-50 transition-colors"
                               >
-                                <td className="px-6 py-4">
+                                <td className="px-3 mid-screen:px-6 py-3 mid-screen:py-4">
                                   <div className="flex items-center gap-3">
                                     <Avatar className="h-10 w-10">
                                       <AvatarImage src={request.user?.image || undefined} />
@@ -634,16 +634,16 @@ export default function DashboardPage() {
                                     </div>
                                   </div>
                                 </td>
-                                <td className="px-6 py-4">
+                                <td className="px-3 mid-screen:px-6 py-3 mid-screen:py-4">
                                   <div className="text-xs text-gray-600">
                                     {formatDistanceToNow(new Date(request.createdAt), { addSuffix: true })}
                                   </div>
                                 </td>
-                                <td className="px-6 py-4">
+                                <td className="px-3 mid-screen:px-6 py-3 mid-screen:py-4">
                                   {getStatusBadge(request.status)}
                                 </td>
                                 {activeTab === "pending" && (
-                                  <td className="px-6 py-4">
+                                  <td className="px-3 mid-screen:px-6 py-3 mid-screen:py-4">
                                     <div className="flex gap-2">
                                       <Button
                                         size="sm"
@@ -673,7 +673,7 @@ export default function DashboardPage() {
                                     </div>
                                   </td>
                                 )}
-                                <td className="pr-6 py-4">
+                                <td className="pr-3 mid-screen:pr-6 py-3 mid-screen:py-4">
                                   <ChevronDown
                                     className={`h-4 w-4 transition-transform text-gray-400 ${isExpanded ? "rotate-180" : "rotate-0"}`}
                                   />
@@ -681,7 +681,7 @@ export default function DashboardPage() {
                               </tr>
                               {isExpanded && (
                                 <tr>
-                                  <td colSpan={activeTab === "pending" ? 5 : 4} className="bg-gray-50 px-6 py-4">
+                                  <td colSpan={activeTab === "pending" ? 5 : 4} className="bg-gray-50 px-3 mid-screen:px-6 py-3 mid-screen:py-4">
                                     <div className="space-y-3 ml-[52px]">
                                       <div className="flex items-center gap-2 text-xs text-gray-600">
                                         <MapPin className="h-3 w-3" />
