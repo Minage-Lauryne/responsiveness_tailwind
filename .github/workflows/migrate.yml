@@ -1,0 +1,118 @@
+name: CI (PR) & Migrate (post-merge)
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+
+jobs:
+  pr-setup:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Ensure pnpm is on PATH
+      - name: Activate pnpm via Corepack
+        run: |
+          corepack enable
+          corepack prepare pnpm@8 --activate
+          pnpm --version
+
+      # Cache pnpm store (faster installs)
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm exec prisma generate
+
+      - name: Build application
+        run: pnpm build
+        env:
+          USE_TEST_PROVIDERS: "test"
+          NEXT_PUBLIC_DEPLOYMENT_URL: "http://localhost:4040"
+          OPENAI_API_KEY: "test"
+          ANTHROPIC_API_KEY: "test"
+          DEV_ADMIN_EMAIL: "test@example.com"
+          CRON_SECRET: "test"
+          GOOGLE_GENERATIVE_AI_API_KEY: "test"
+          NODE_ENV: "production"
+          TRIGGER_SECRET_KEY: "test"
+          STRIPE_SECRET_KEY: "test"
+          STRIPE_WEBHOOK_SIGNING_SECRET: "test"
+          BETTER_AUTH_SECRET: "test"
+          SENTRY_SUPPRESS_TURBOPACK_WARNING: "1"
+          RESEND_API_KEY: "test"
+          NEXT_PUBLIC_SUPABASE_URL: "https://test.supabase.co"
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: "test"
+          SUPABASE_SERVICE_ROLE_KEY: "test"
+          GOOGLE_API_KEY: "test"
+          LUMA_API_KEY: "test"
+          NEXT_PUBLIC_POSTHOG_KEY: "test"
+          NEXT_PUBLIC_POSTHOG_HOST: "https://test.posthog.com"
+          REDIS_URL: "redis://localhost:6379"
+          POSTHOG_API_KEY: "test"
+          POSTHOG_ENV_ID: "test"
+          POSTGRES_PRISMA_URL: "postgresql://user:password@localhost:5432/testdb?pgbouncer=true&connect_timeout=15"
+          POSTGRES_URL_NON_POOLING: "postgresql://user:password@localhost:5432/testdb"
+          BILLIAM_AUTH_SECRET: "test"
+
+  migrate:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: migrate-${{ github.ref_name }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Activate pnpm via Corepack
+        run: |
+          corepack enable
+          corepack prepare pnpm@8 --activate
+          pnpm --version
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm exec prisma generate
+
+      - name: Apply pending migrations (DEV)
+        if: github.ref_name == 'develop'
+        run: pnpm exec prisma migrate deploy
+        env:
+          POSTGRES_URL_NON_POOLING: ${{ secrets.DEV_POSTGRES_URL_NON_POOLING }}
+          POSTGRES_PRISMA_URL: ${{ secrets.DEV_POSTGRES_PRISMA_URL }}
+
+      - name: Apply pending migrations (MAIN)
+        if: github.ref_name == 'main'
+        run: pnpm exec prisma migrate deploy
+        env:
+          POSTGRES_URL_NON_POOLING: ${{ secrets.POSTGRES_URL_NON_POOLING }}
+          POSTGRES_PRISMA_URL: ${{ secrets.POSTGRES_PRISMA_URL }}

@@ -1,0 +1,503 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Session {
+  id                   String   @id @default(cuid())
+  userId               String
+  activeOrganizationId String?
+  createdAt            DateTime @default(now())
+  expiresAt            DateTime
+  impersonatedBy       String?
+  ipAddress            String?
+  token                String   @unique
+  updatedAt            DateTime @default(now()) @updatedAt
+  userAgent            String?
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @default(now()) @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+}
+
+model User {
+  id                       String                @id @default(cuid())
+  name                     String?
+  location                 String?
+  interests                String[]
+  email                    String?               @unique
+  createdAt                DateTime              @default(now())
+  isAdmin                  Boolean               @default(false)
+  isBetaUser               Boolean               @default(false)
+  marketingEmails          Boolean               @default(true)
+  productUpdates           Boolean               @default(true)
+  updatedAt                DateTime              @default(now()) @updatedAt
+  aiUsage                  String?
+  firstName                String?
+  banExpires               DateTime?
+  banReason                String?
+  banned                   Boolean?
+  emailVerified            Boolean               @default(false)
+  image                    String?
+  role                     String?
+  url                      String?
+  deletedAt                DateTime?             @map("deleted_at")
+  hasCompletedOrgOnboarding Boolean              @default(false)
+  accounts                 Account[]
+  chats                    Chat[]
+  invitations              Invitation[]
+  members                  Member[]
+  researchRequests         ResearchRequest[]
+  seatAllocations          SeatAllocation[]
+  sessions                 Session[]
+  Subject                  Subject[]
+  originallyCreatedSubjects Subject[]           @relation("SubjectOriginalCreator")
+  subscriptions            Subscription[]
+  emails                   UserEmail[]
+  workspaceDocuments       WorkspaceDocument[]
+  restorationRequests      RestorationRequest[]
+}
+
+model UserEmail {
+  id        String   @id @default(cuid())
+  userId    String
+  email     String   @unique
+  isPrimary Boolean  @default(false)
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, email])
+  @@index([userId])
+  @@index([email])
+}
+
+model Organization {
+  id                  String              @id @default(cuid())
+  name                String
+  slug                String?             @unique
+  logo                String?
+  createdAt           DateTime            @default(now())
+  metadata            String?
+  updatedAt           DateTime            @default(now()) @updatedAt
+  freeForever         Boolean             @default(false)
+  trialEndsAt         DateTime?
+  trialChatCount      Int                 @default(5)
+  domain              String?
+  irsEin              String?
+  irsExemptionStatus  String?
+  irsOrganizationName String?
+  irsSubsectionCode   String?
+  irsTaxPeriod        String?
+  irsVerified         Boolean             @default(false)
+  irsVerifiedAt       DateTime?
+  isUSBased           Boolean             @default(false)
+  verificationStatus  VerificationStatus  @default(NOT_CHECKED)
+  chats               Chat[]
+  invitations         Invitation[]
+  members             Member[]
+  researchRequests    ResearchRequest[]
+  subjects            Subject[]
+  subscriptions       Subscription[]
+  workspaceDocuments  WorkspaceDocument[]
+  form990Filings   Form990Filing[]
+  domains             Domain[]
+}
+
+model Domain {
+  id             String       @id @default(cuid())
+  organizationId String
+  domain         String       @unique
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@map("domain")
+}
+
+model Member {
+  id                String       @id @default(cuid())
+  organizationId    String
+  userId            String
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @default(now()) @updatedAt
+  role              MemberRole   @default(MEMBER)
+  organizationEmail String?
+  deletedAt         DateTime?    @map("deleted_at")
+  organization      Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+}
+
+model Invitation {
+  id             String           @id @default(cuid())
+  organizationId String
+  email          String
+  expiresAt      DateTime
+  inviterId      String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @default(now()) @updatedAt
+  token          String?          @unique
+  message        String?
+  type           InvitationType   @default(INVITATION)
+  role           MemberRole       @default(MEMBER)
+  status         InvitationStatus @default(PENDING)
+  user           User             @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+model Chat {
+  id             String        @id @default(cuid())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now()) @updatedAt
+  title          String?
+  userId         String
+  SubjectId      String?
+  type           ChatType      @default(ANALYSIS)
+  organizationId String?
+  deletedAt      DateTime?     @map("deleted_at")
+  Subject        Subject?      @relation("SubjectChats", fields: [SubjectId], references: [id])
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages       Message[]
+  streams        Stream[]
+  votes          Vote[]
+
+  @@index([organizationId])
+  @@index([userId, organizationId])
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  chatId      String
+  role        String
+  parts       Json
+  attachments Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  chat        Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  votes       Vote[]
+}
+
+model Vote {
+  chatId    String
+  messageId String
+  isUpvoted Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@id([chatId, messageId])
+}
+
+model ResearchDocument {
+  id                     String                  @id @default(cuid())
+  abstract               String
+  citation               String
+  studyTitle             String
+  studyLink              String
+  gdiveLink              String?
+  metaAnalysisTitle      String?
+  wsippLink              String?
+  gdriveMetaAnalysisLink String?
+  status                 String
+  fileUrl                String?
+  fileType               String?
+  wordCount              Int?
+  uploadDate             DateTime
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @default(now()) @updatedAt
+  isArchived             Boolean                 @default(false)
+  abstractEmbedding      Unsupported("vector")?
+  chunks                 ResearchDocumentChunk[]
+
+  @@index([status])
+  @@index([uploadDate])
+}
+
+model ResearchDocumentChunk {
+  id         String                 @id @default(cuid())
+  chunkId    String
+  content    String
+  section    String
+  embedding  Unsupported("vector")?
+  documentId String
+  createdAt  DateTime               @default(now())
+  updatedAt  DateTime               @default(now()) @updatedAt
+  document   ResearchDocument       @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+  @@index([chunkId])
+}
+
+model Subject {
+  id                  String                 @id @default(cuid())
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @default(now()) @updatedAt
+  createdById          String
+  originalCreatedById String?
+  title                String?
+  context              String
+  contextEmbedding     Unsupported("vector")?
+  isArchived           Boolean                @default(false)
+  organizationId       String?
+  deletedAt            DateTime?              @map("deleted_at")
+  djangoAnalysisIds Json?                  @map("django_analysis_ids")
+  chats               Chat[]                 @relation("SubjectChats")
+  researchRequest     ResearchRequest?
+  createdBy           User                   @relation(fields: [createdById], references: [id])
+  originalCreatedBy   User?                  @relation("SubjectOriginalCreator", fields: [originalCreatedById], references: [id], onDelete: SetNull)
+  organization        Organization?          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  documents           WorkspaceDocument[]    @relation("SubjectToWorkspaceDocument")
+
+  @@index([organizationId])
+  @@index([createdById, organizationId])
+  @@index([originalCreatedById])
+}
+
+model ResearchRequest {
+  id                String              @id @default(cuid())
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @default(now()) @updatedAt
+  createdById       String
+  subjectId         String?             @unique
+  context           String?
+  withExpertReview  Boolean             @default(false)
+  contactName       String?
+  email             String?
+  organization      String?
+  researchObjective String?
+  researchTitle     String?
+  sectorFocus       String?
+  selectedService   String?
+  organizationId    String?
+  deletedAt         DateTime?           @map("deleted_at")
+  createdBy         User                @relation(fields: [createdById], references: [id])
+  organizationRef   Organization?       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  subject           Subject?            @relation(fields: [subjectId], references: [id])
+  documents         WorkspaceDocument[] @relation("ResearchRequestToWorkspaceDocument")
+
+  @@index([organizationId])
+  @@index([createdById, organizationId])
+  @@index([subjectId])
+}
+
+model WorkspaceDocument {
+  id               String            @id @default(cuid())
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @default(now()) @updatedAt
+  name             String
+  rawText          String?
+  fileType         String
+  supabaseURL      String
+  addedById        String
+  llmSummary       String?
+  pageCount        Int?
+  rawTextWordCount Int?
+  organizationId   String?
+  deletedAt        DateTime?         @map("deleted_at")
+  addedBy          User              @relation(fields: [addedById], references: [id])
+  organization     Organization?     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  researchRequests ResearchRequest[] @relation("ResearchRequestToWorkspaceDocument")
+  Subjects         Subject[]         @relation("SubjectToWorkspaceDocument")
+
+  @@index([organizationId])
+  @@index([addedById, organizationId])
+}
+
+model Stream {
+  id        String   @id @default(cuid())
+  chatId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+  @@index([chatId])
+}
+
+model Subscription {
+  id                   String                        @id @default(cuid())
+  createdAt            DateTime                      @default(now())
+  updatedAt            DateTime                      @updatedAt
+  status               SubscriptionStatus
+  plan                 SubscriptionPlan              @default(Standard)
+  seats                Int                           @default(1)
+  retirementReason     SubscriptionRetirementReason?
+  pastDue              Boolean                       @default(false)
+  stripeCustomerId     String
+  stripeSubscriptionId String                        @unique
+  periodStart          DateTime
+  periodEnd            DateTime
+  userId               String?
+  organizationId       String?
+  type                 SubscriptionType              @default(Individual)
+  seatAllocations      SeatAllocation[]
+  organization         Organization?                 @relation(fields: [organizationId], references: [id])
+  user                 User?                         @relation(fields: [userId], references: [id])
+}
+
+model SeatAllocation {
+  id             String       @id @default(cuid())
+  subscriptionId String
+  userId         String
+  allocatedAt    DateTime     @default(now())
+  revokedAt      DateTime?
+  deletedAt      DateTime?    @map("deleted_at")
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id])
+
+  @@unique([subscriptionId, userId])
+}
+
+model IrsOrganizationData {
+  ein              String  @id @db.VarChar(9)
+  organizationName String  @map("organization_name")
+  taxPeriod        String? @map("tax_period") @db.VarChar(6)
+  assetAmount      BigInt? @map("asset_amount")
+  incomeAmount     BigInt? @map("income_amount")
+  revenueAmount    BigInt? @map("revenue_amount")
+  rulingDate       String? @map("ruling_date") @db.VarChar(6)
+  subsection       String? @db.VarChar(2)
+  exemptionStatus  String? @map("exemption_status") @db.VarChar(2)
+
+  @@index([organizationName])
+  @@map("irs_organization_data")
+}
+
+enum MemberRole {
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  EXPIRED
+  CANCELED
+}
+
+enum InvitationType {
+  INVITATION
+  JOIN_REQUEST
+}
+
+enum VerificationStatus {
+  NOT_CHECKED
+  VERIFIED
+  INACTIVE
+  NOT_FOUND
+  SKIPPED
+  PENDING_ADMIN
+}
+
+enum ChatType {
+  ANALYSIS
+  COUNTERPOINT
+  BIAS
+  SUMMARY
+  BOARD_MEMO
+  COMPREHENSIVE_REPORT
+  DISCUSSION_QUESTIONS
+  FINANCIAL_ANALYSIS
+  LANDSCAPE_ANALYSIS
+  LEADERSHIP_ANALYSIS
+  PROGRAM_ANALYSIS
+  RELEVANT_RESEARCH
+  SITE_VISIT_PREP_GUIDE
+  STRATEGIC_PLANNING_GUIDE
+}
+
+enum SubscriptionPlan {
+  Standard
+  First100
+  FirstYear
+}
+
+enum SubscriptionType {
+  Individual
+  Team
+}
+
+enum SubscriptionStatus {
+  active
+  canceled
+  retired
+}
+
+enum SubscriptionRetirementReason {
+  unpaid
+  canceledByUser
+}
+
+
+model Form990Filing {
+  id             String   @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  ein            String   @db.VarChar(9)
+  taxYear        Int
+  pdfUrl         String   @db.Text
+  totalRevenue   BigInt?
+  totalExpenses  BigInt?
+  totalAssets    BigInt?
+
+  createdAt      DateTime @default(now())
+
+  @@unique([ein, taxYear])
+  @@index([organizationId])
+  @@map("form_990_filings")
+}
+
+model RestorationRequest {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status          String    @default("PENDING")
+  requestedAt     DateTime  @default(now())
+  resolvedAt      DateTime?
+  resolvedBy      String?
+  rejectionReason String?
+  appealMessage   String?
+  appealedAt      DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @default(now()) @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@map("restoration_requests")
+}
+ 

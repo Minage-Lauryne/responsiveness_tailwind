@@ -1,0 +1,15 @@
+export const interests = [
+  { id: "income-inequality", label: "Income Inequality" },
+  { id: "unemployment", label: "Unemployment & Underemployment" },
+  { id: "food-insecurity", label: "Food Insecurity" },
+  { id: "education", label: "Education Access and Quality" },
+  { id: "housing", label: "Housing Stability" },
+  { id: "racial-gender-inequality", label: "Racial and Gender Inequality" },
+  { id: "healthcare", label: "Healthcare Access & Affordability" },
+  { id: "financial-literacy", label: "Financial Literacy & Wealth Building" },
+  { id: "childcare", label: "Childcare and Family Support" },
+  { id: "criminal-justice", label: "Criminal Justice and Legal Barriers" },
+  { id: "mental-health", label: "Mental Health Services" },
+  { id: "policies", label: "Policies" },
+  { id: "other", label: "Other" },
+];
