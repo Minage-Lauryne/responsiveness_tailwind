@@ -128,7 +128,7 @@ export function AppSidebar({
       )}
       {...props}
     >
-      <SidebarHeader className="pt-8 pb-72">
+      <SidebarHeader className="pt-8 pb-6">
         {state === "expanded" ? (
           <div className="flex items-center gap-3">
             <Image
@@ -162,7 +162,7 @@ export function AppSidebar({
         )}
       </SidebarHeader>
 
-      <SidebarContent className="flex flex-col gap-0 overflow-y-auto scrollbar-hide">
+      <SidebarContent className="flex flex-col gap-0">
       <SidebarGroup className="py-1">
         <SidebarMenu>
           <SidebarMenuItem>
