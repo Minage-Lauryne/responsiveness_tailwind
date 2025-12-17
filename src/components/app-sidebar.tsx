@@ -124,11 +124,12 @@ export function AppSidebar({
         "[&_[data-sidebar=sidebar]]:from-[#D1F4F4]",
         "[&_[data-sidebar=sidebar]]:to-white",
         "[&_[data-sidebar=sidebar]]:text-[#162436]",
+        "[&_[data-sidebar=sidebar]]:relative",
         className,
       )}
       {...props}
     >
-      <SidebarHeader className="pt-8 pb-6">
+      <SidebarHeader className="pt-8 pb-72">
         {state === "expanded" ? (
           <div className="flex items-center gap-3">
             <Image
@@ -162,7 +163,7 @@ export function AppSidebar({
         )}
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="overflow-visible pb-[220px]">
       <SidebarGroup className="py-1">
         <SidebarMenu>
           <SidebarMenuItem>
@@ -281,7 +282,7 @@ export function AppSidebar({
         </SidebarMenu>
       </SidebarGroup>
 
-      <div className="mt-auto pt-4">
+      <div className="absolute bottom-[120px] left-0 right-0">
         <SidebarGroup className="py-1">
           <SidebarMenu>
             <SidebarMenuItem>
@@ -299,7 +300,7 @@ export function AppSidebar({
       </div>
     </SidebarContent>
 
-     <SidebarFooter>
+     <SidebarFooter className="absolute bottom-0 left-0 right-0">
        <div className="px-3 pb-2 pt-4">
          <p className="text-xs font-medium text-gray-500">Profiles</p>
        </div>
