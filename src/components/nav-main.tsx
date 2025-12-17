@@ -89,7 +89,7 @@ export function NavMain({
                     <ChevronUp className="ml-auto h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-180" />
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="max-h-[clamp(80px,calc(100vh-680px),240px)] overflow-y-auto scrollbar-hide">
+                <CollapsibleContent className="max-h-[min(200px,30vh)] overflow-y-auto scrollbar-hide">
                   <SidebarMenuSub>
                     {item.items?.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.url}>
