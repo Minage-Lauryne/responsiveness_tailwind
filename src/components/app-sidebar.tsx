@@ -115,8 +115,6 @@ export function AppSidebar({
    isAdmin: user?.isAdmin ?? false,
 };
 
-const shouldCompressSpacing =
-  state === "expanded" && (isRecentsOpen || isProjectFoldersOpen);
 
   return (
     <Sidebar
@@ -130,11 +128,7 @@ const shouldCompressSpacing =
       )}
       {...props}
     >
-      <SidebarHeader
-        className={cn(
-          "pt-8 pb-72 transition-all duration-200",
-        )}
-      >
+      <SidebarHeader className="pt-8 pb-72">
         {state === "expanded" ? (
           <div className="flex items-center gap-3">
             <Image
@@ -168,12 +162,7 @@ const shouldCompressSpacing =
         )}
       </SidebarHeader>
 
-      <SidebarContent
-        className={cn(
-          "overflow-visible transition-all duration-200",
-          shouldCompressSpacing ? "mt-0" : "mt-6",
-        )}
-      >
+      <SidebarContent className="overflow-visible flex flex-col">
       <SidebarGroup className="py-1">
         <SidebarMenu>
           <SidebarMenuItem>
@@ -292,12 +281,9 @@ const shouldCompressSpacing =
         </SidebarMenu>
       </SidebarGroup>
 
-      <div
-        className={cn(
-          "mt-auto transition-all duration-200",
-          shouldCompressSpacing ? "pt-4" : "pt-12",
-        )}
-      >
+      <div className="flex-1 min-h-0" />
+      
+      <div className="flex-shrink-0">
         <SidebarGroup className="py-1">
           <SidebarMenu>
             <SidebarMenuItem>
@@ -315,7 +301,7 @@ const shouldCompressSpacing =
       </div>
     </SidebarContent>
 
-     <SidebarFooter>
+     <SidebarFooter className="flex-shrink-0">
        <div className="px-3 pb-2 pt-4">
          <p className="text-xs font-medium text-gray-500">Profiles</p>
        </div>
