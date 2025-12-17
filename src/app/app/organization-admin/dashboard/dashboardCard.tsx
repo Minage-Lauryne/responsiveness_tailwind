@@ -14,8 +14,8 @@ export function DashboardCard({
   return (
     <Card className="bg-white border border-gray-200 rounded-2xl hover:shadow-lg transition-all duration-200">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 pt-6 px-6">
-        <CardTitle className="text-sm font-semibold text-gray-600 uppercase tracking-wide">{title}</CardTitle>
-        <div className="rounded-full bg-gray-100 p-3">
+        <CardTitle className="text-sm font-semibold text-gray-600 uppercase tracking-wide flex-1 min-w-0 pr-3">{title}</CardTitle>
+        <div className="rounded-full bg-gray-100 p-3 flex-shrink-0">
           {icon}
         </div>
       </CardHeader>
